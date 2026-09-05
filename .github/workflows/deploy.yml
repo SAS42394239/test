@@ -1,0 +1,38 @@
+name: Publish single-file app to gh-pages
+
+# Builds the app and commits dist/index.html as the ONLY file on a
+# gh-pages branch. Then GitHub Pages = "Deploy from a branch" → gh-pages.
+# No Pages-specific actions, no artifacts — just a plain HTML file in the repo.
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Push dist/index.html to gh-pages branch
+        working-directory: dist
+        run: |
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b gh-pages
+          git add -A
+          git commit -m "Build ${{ github.sha }}"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages

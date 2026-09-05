@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #060708;
+  --color-panel: #0a0c0e;
+  --color-card: #101318;
+  --color-card2: #151922;
+  --color-volt: #d7ff3f;
+  --color-voltdeep: #a8d115;
+  --color-bone: #eef3ea;
+  --color-fog: #9aa49c;
+  --color-ash: #5b645d;
+  --color-alert: #ff5964;
+  --color-ambery: #ffc24b;
+  --font-display: "Anton", "Archivo", sans-serif;
+  --font-sans: "Archivo", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  background: #040506;
+}
+
+body {
+  @apply bg-ink text-bone font-sans antialiased;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--color-volt);
+  color: #060708;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ---------- shared atoms ---------- */
+
+.card {
+  background: linear-gradient(165deg, #13161c 0%, #0c0e12 78%);
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 22px;
+}
+
+.card-flat {
+  background: #101318;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 22px;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ash);
+}
+
+.label-volt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-volt);
+}
+
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.hairline {
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+.btn-volt {
+  @apply bg-volt text-ink font-extrabold uppercase tracking-wide rounded-2xl active:scale-[0.97] transition-transform;
+}
+
+.chip {
+  @apply rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* noise texture */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* scanner */
+@keyframes scanline {
+  0% {
+    top: 4%;
+  }
+  50% {
+    top: 92%;
+  }
+  100% {
+    top: 4%;
+  }
+}
+.scanline {
+  animation: scanline 2.2s ease-in-out infinite;
+}
+
+@keyframes blinkdot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+.blink {
+  animation: blinkdot 1.1s ease-in-out infinite;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* leaflet dark pass */
+.leaflet-container {
+  background: #07090b;
+  font-family: var(--font-sans);
+  outline: none;
+}
+.leaflet-control-attribution {
+  background: rgba(6, 7, 8, 0.65) !important;
+  color: #49524c !important;
+  font-size: 8px !important;
+  padding: 1px 5px;
+}
+.leaflet-control-attribution a {
+  color: #6b756d !important;
+}
+.leaflet-bar a {
+  background: #101318 !important;
+  color: #eef3ea !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.runner-dot {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-volt);
+  border: 3px solid #060708;
+  box-shadow: 0 0 0 2px rgba(215, 255, 63, 0.55);
+}
+.runner-dot::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(215, 255, 63, 0.7);
+  animation: ripple 1.6s ease-out infinite;
+}
+
+.volt-glow {
+  box-shadow: 0 0 32px -6px rgba(215, 255, 63, 0.45);
+}
+
+input:focus-visible,
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(215, 255, 63, 0.55);
+  outline-offset: 1px;
+}
